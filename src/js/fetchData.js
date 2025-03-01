@@ -3,7 +3,7 @@ let personalApiKey = import.meta.env.VITE_API_KEY
 async function getGeocoding(targePlace) {
     document.querySelector(".loading").classList.add("active")
     try {
-        let response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${targePlace}&limit=5&appid=${personalApiKey}`);
+        let response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${targePlace}&limit=5&appid=${personalApiKey}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
