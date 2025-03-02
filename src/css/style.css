@@ -41,6 +41,18 @@ a {
     direction: ltr;
 }
 
+@media (min-width: 992px) {
+    .hero-area .container {
+        padding: 0 200px;
+    }
+}
+
+.hero-area .search-bar form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .hero-area .search-bar .error {
     font-size: 12px;
     color: red;
@@ -51,7 +63,6 @@ a {
 @media (min-width: 767px) {
     .hero-area .input-group {
         width: 70%;
-        margin: auto;
     }
 }
 
@@ -63,22 +74,26 @@ a {
     box-shadow: none;
 }
 
-.hero-area .input-group button {}
-
 .hero-area .input-group button:focus {
     box-shadow: none;
 }
 
+.hero-area .btn-group {
+    height: 45px;
+}
+
 .hero-area .row {}
 
-.hero-area .row .loading {
+.hero-area .row .loading,
+.hero-area .full-loading {
     background-color: var(--main-bg-color);
     opacity: 0;
     z-index: -1;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
-.hero-area .row .loading.active {
+.hero-area .row .loading.active,
+.hero-area .full-loading.active {
     opacity: 1;
     z-index: 10;
 }
@@ -94,10 +109,43 @@ a {
     animation: rotate 0.8s infinite linear;
 }
 
+.hero-area .full-loading span {
+    width: 40px;
+    height: 40px;
+    display: block;
+    background: transparent;
+    border-radius: 50%;
+    border: 5px solid white;
+    border-left-color: transparent;
+    animation: rotate 0.8s infinite linear;
+}
+
 @keyframes rotate {
     to {
         transform: rotate(360deg);
     }
+}
+
+.hero-area .row .current-weather>div {
+    padding: 0 1rem;
+    height: 100px;
+}
+
+.hero-area .row .temperature span {
+    font-size: 4rem;
+    font-weight: bold;
+    position: relative;
+}
+
+.hero-area .row .temperature sup {
+    font-size: 21px;
+    position: absolute;
+    top: 10px;
+    right: -15px;
+}
+
+.hero-area .row .current-preview>div {
+    white-space: nowrap;
 }
 
 /* End Hero Area  */

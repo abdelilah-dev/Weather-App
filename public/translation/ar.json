@@ -1,0 +1,12 @@
+{
+    "lang": "العربية",
+    "shortLang": "ar",
+    "title": "تطبيق الطقس",
+    "search_placeholder": "أدخل المدينة أو البلد...",
+    "search_button": "بحث",
+    "error_message": "المدينة أو البلد غير صحيح.",
+    "rain": "الأمطار",
+    "humidity": "الرطوبة",
+    "wind": "الرياح",
+    "weather": "الطقس"
+}

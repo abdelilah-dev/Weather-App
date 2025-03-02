@@ -1,72 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <title>forecasts weather App</title>
-    <!-- CSS Files  -->
-    <link rel="stylesheet" href="/src/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/src/css/bootstrap.min.css.map">
-    <link rel="stylesheet" href="/src/css/style.css">
-    <!-- Google Fonts -->
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <title>forecasts weather App</title>
+        <!-- CSS Files  -->
+        <link rel="stylesheet" href="/src/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/src/css/bootstrap.min.css.map">
+        <link rel="stylesheet" href="/src/css/style.css">
+        <!-- Google Fonts -->
 
-  </head>
+    </head>
 
-  <body>
-    <div class="hero-area ltr">
-      <div class="container">
-        <div class="search-bar mb-5 pt-5 text-center">
-          <form action="">
-            <div class="input-group ">
-              <input type="text" class="input form-control" placeholder="Country, City, Zip Code.."
-                aria-label="Recipient's username" aria-describedby="button-addon2">
-              <button class="search-btn btn fw-bold px-sm-4 btn-outline-secondary" type="submit"
-                id="button-addon2">Search</button>
+    <body>
+        <div class="hero-area " dir="ltr">
+            <div
+                class="full-loading active d-flex align-items-center justify-content-center w-100 h-100 position-absolute top-50 start-50 translate-middle">
+                <span></span>
             </div>
-          </form>
-          <span class="error"></span>
+            <div class="container">
+                <div class="search-bar mb-5 pt-5 text-center">
+                    <form action="">
+                        <div class="input-group ">
+                            <input type="text" class="input form-control" placeholder="Country, City, Zip Code.."
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="search-btn btn fw-bold px-sm-4 btn-outline-secondary" type="submit"
+                                id="button-addon2">Search</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button " class="btn btn-primary dropdown-toggle slectlang-menu d-flex align-items-center gap-2" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                En
+                            </button>
+                            <ul class="dropdown-menu change-lang">
+                                <li><a class="dropdown-item" translate-lang="ar" href="#">Arabic</a></li>
+                                <li><a class="dropdown-item" translate-lang="en">English</a></li>
+                            </ul>
+                        </div>
+                    </form>
+                    <span class="error"></span>
+                </div>
+                <div class="row gap-3 gap-sm-0 position-relative">
+                    <div
+                        class="loading d-flex align-items-center justify-content-center w-100 h-100 position-absolute top-50 start-50 translate-middle">
+                        <span></span>
+                    </div>
+                    <div class="current-weather col-sm-6 d-flex align-items-start ">
+                        <div class="img">
+                        </div>
+                        <div class="temperature fw-bold">
+                            <span>15 <sup>°C</sup></span>
+                        </div>
+                        <div class="current-preview">
+                            <div class="rain">rain: 00%</div>
+                            <div class="humidity">humidity: 00%</div>
+                            <div class="wind">wind: km/h</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 day-detail d-flex flex-column align-items-sm-end">
+                        <div class="title">Weather</div>
+                        <div class="current-day"></div>
+                        <div class="weather-desc"></div>
+                    </div>
+                    <div class="col-12">
+                        hhhhh
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row position-relative">
-          <div
-            class="loading active d-flex align-items-center justify-content-center w-100 h-100 position-absolute top-50 start-50 translate-middle">
-            <span></span>
-          </div>
-          <div class="current-weather col-sm-6">
-            <div class="img">
-            </div>
-            <div class="temperature">
-              <span>15 <sup>°C</sup></span>
-            </div>
-            <div class="current-preview">
-              <div class="rain">rain: 00%</div>
-              <div class="humidity">humidity: 00%</div>
-              <div class="wind">wind: km/h</div>
-            </div>
-          </div>
-          <div class="col-sm-6 day-detail">
-            <div class="title">Weather</div>
-            <div class="current-day"></div>
-            <div class="weather-desc"></div>
-          </div>
-          <div class="col-12">
-            hhhhh
-          </div>
-        </div>
-      </div>
-    </div>
-    <form action="" method="get">
-      <input type="text" name="Location" id="location" placeholder="YOur Location">
-      <button type="submit">Get data</button>
-    </form>
-    <!-- js Files -->
-    <script src="/src/js/bootstrap.bundle.min.js"></script>
-    <script src="/src/js/bootstrap.bundle.min.js.map"></script>
-    <script src="/src/js/main.js" type="module"></script>
-    <script src="/src/js/fetchData.js" type="module"></script>
+        <!-- js Files -->
+        <script src="/src/js/bootstrap.bundle.min.js"></script>
+        <script src="/src/js/bootstrap.bundle.min.js.map"></script>
+        <script src="/src/js/main.js" type="module"></script>
+        <script src="/src/js/fetchData.js" type="module"></script>
 
-  </body>
+    </body>
 
 </html>

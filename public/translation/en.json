@@ -1,0 +1,12 @@
+{
+    "lang": "English",
+    "shortLang": "en",
+    "title": "Weather App",
+    "search_placeholder": "Enter city or country...",
+    "search_button": "Search",
+    "error_message": "The country or city is not valid.",
+    "rain": "Rain",
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "weather": "Weather"
+}
