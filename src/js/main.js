@@ -1,6 +1,6 @@
 import { getGeocoding, currentWeatherData, getWeekWeatherdata, getTranslateLang } from "./fetchData.js";
-
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 // let date = new Date("2025-03-02 15:00:00");
 // console.log(date);
 // console.log(date.getDay());
