@@ -17,7 +17,7 @@ let SearchBtn = document.querySelector(".search-btn");
 let changLangBtns = document.querySelector(".change-lang");
 let weatherData = {};
 let currentLang = window.localStorage.lang || "en";
-
+console.log(currentLang);
 
 window.onload = async function () {
     document.querySelector(".full-loading").classList.remove("active")
