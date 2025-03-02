@@ -57,6 +57,7 @@ SearchBtn.onclick = async function (e) {
 
 // if select another languge
 changLangBtns.addEventListener("click", async (e) => {
+    e.preventDefault();
     let selectLang = e.target.getAttribute("translate-lang");
     window.localStorage.setItem("lang", selectLang);
     currentLang = selectLang;
