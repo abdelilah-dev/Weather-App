@@ -56,16 +56,17 @@ SearchBtn.onclick = async function (e) {
 }
 
 // if select another languge
-changLangBtns.addEventListener("click", async (e) => {
-    e.preventDefault();
-    let selectLang = e.target.getAttribute("translate-lang");
-    window.localStorage.setItem("lang", selectLang);
-    currentLang = selectLang;
-    displayCurrentWeather(JSON.parse(window.localStorage.weatherData).currentWeather, await getTranslateLang(currentLang))
-    toggleLanguageClass(selectLang);
-    loadTranslate(selectLang);
+document.querySelectorAll(".dropdown-item").forEach((ele) => {
+    ele.addEventListener("click", async (e) => {
+        e.preventDefault();
+        let selectLang = e.target.getAttribute("translate-lang");
+        window.localStorage.setItem("lang", selectLang);
+        currentLang = selectLang;
+        displayCurrentWeather(JSON.parse(window.localStorage.weatherData).currentWeather, await getTranslateLang(currentLang))
+        toggleLanguageClass(selectLang);
+        loadTranslate(selectLang);
+    })
 })
-
 // display the current weather of today
 function displayCurrentWeather(targetPlace, translations) {
     let weatherDetails = document.querySelector(".current-weather");
