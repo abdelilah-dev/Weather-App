@@ -55,7 +55,7 @@ async function getTranslateLang(lang) {
         document.querySelector(".full-loading").classList.remove("active")
     }, 1000);
     try {
-        let response = await fetch(`/../public/translation/${lang}.json`)
+        let response = await fetch(`/translation/${lang}.json`)
         if (!response.ok) {
             throw new Error(`HTTP error 3! status: ${response.status}`);
         }
