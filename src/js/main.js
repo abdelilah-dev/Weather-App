@@ -1,4 +1,4 @@
-import { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation } from "./fetchData.js";
+import { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation, fetchLocationByIP } from "./fetchData.js";
 import { displayCurrentWeather, displayWeekWeather } from "./domUpdater.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -16,10 +16,19 @@ window.onload = async function () {
         let getTodayWeather = await fetchTodayWeather(getOldDayWeather.coord.lat, getOldDayWeather.coord.lon, window.localStorage.lang || "en")
         let getThisWeekWeather = await fetchWeeklyWeather(getOldDayWeather.coord.lat, getOldDayWeather.coord.lon, window.localStorage.lang || "en");
         let translate = await fetchTranslation(currentLang);
-        displayCurrentWeather(getTodayWeather, translate);
-        displayWeekWeather(getUniqueDaysWeather(getThisWeekWeather), translate);
+        updateWeatherUI(getTodayWeather, getThisWeekWeather, translate);
     } else {
-        console.log("no data to show")
+        getLocationByIP();
+    }
+}
+
+async function getLocationByIP() {
+    try {
+        let locationByIp = await fetchLocationByIP()
+        getWeatherData(locationByIp.city);
+    } catch (error) {
+        console.error("IP location error:", error);
+        alert("Unable to get your location. Please search manually.");
     }
 }
 
@@ -29,24 +38,27 @@ SearchBtn.onclick = async function (e) {
     if (input.value !== "") {
         document.querySelector(".search-bar .error").innerHTML = "";
         try {
-            // wait to fetch data from getgeocoding and return it
-            let geocoding = await getGeocoding(input.value);
-            if (geocoding.length !== 0) {
-                // wait to fetch data from two functions and return it
-                [weatherData.currentWeather, weatherData.weekWeather] = await Promise.all([
-                    fetchTodayWeather(geocoding[0].lat, geocoding[0].lon, currentLang),
-                    fetchWeeklyWeather(geocoding[0].lat, geocoding[0].lon, currentLang)
-                ]);
-                let translate = await fetchTranslation(currentLang);
-                window.localStorage.setItem("weatherData", JSON.stringify(weatherData));
-                updateWeatherUI(weatherData.currentWeather, weatherData.weekWeather, translate);
-            }
+            getWeatherData(input.value);
         } catch (error) {
             document.querySelector(".search-bar .error").innerHTML = "* There was an error fetching the weather data.";
             throw new Error(`The Error : ${error}`)
         } finally {
             input.value = "";
         }
+    }
+}
+
+async function getWeatherData(locationName) {
+    let geocoding = await getGeocoding(locationName);
+    if (geocoding.length !== 0) {
+        // wait to fetch data from two functions and return it
+        [weatherData.currentWeather, weatherData.weekWeather] = await Promise.all([
+            fetchTodayWeather(geocoding[0].lat, geocoding[0].lon, currentLang),
+            fetchWeeklyWeather(geocoding[0].lat, geocoding[0].lon, currentLang)
+        ]);
+        let translate = await fetchTranslation(currentLang);
+        window.localStorage.setItem("weatherData", JSON.stringify(weatherData));
+        updateWeatherUI(weatherData.currentWeather, weatherData.weekWeather, translate);
     }
 }
 

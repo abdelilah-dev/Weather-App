@@ -1,5 +1,6 @@
 let personalApiKey = import.meta.env.VITE_API_KEY
-
+let ip_access_key = import.meta.env.VITE_API_IP_KEY
+console.log(ip_access_key);
 
 // get the geoCoding of the target place by city or country name 
 async function getGeocoding(targePlace) {
@@ -57,11 +58,21 @@ async function fetchTranslation(lang) {
     try {
         let response = await fetch(`/translation/${lang}.json`)
         if (!response.ok) {
-            throw new Error(`HTTP error 3! status: ${response.status}`);
+            throw new Error(`HTTP error 4! status: ${response.status}`);
         }
         return await response.json();
     } catch (error) {
         throw new Error(`the error 4-2 : ${error}`)
+    }
+}
+
+async function fetchLocationByIP() {
+    try {
+        let response = await fetch(`https://ipapi.co/json/?access_key=${ip_access_key}`)
+        if (!response.ok) throw new Error(`HTTP ERROR 5! status : ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        throw new Error(`the error 5-2 : ${error}`)
     }
 }
 
@@ -70,4 +81,4 @@ function toggleLoader(show) {
     show ? loader.classList.add("active") : loader.classList.remove("active");
 }
 
-export { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation }
+export { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation, fetchLocationByIP }
