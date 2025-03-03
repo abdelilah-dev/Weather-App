@@ -1,5 +1,6 @@
 // display the current weather of today
 function displayCurrentWeather(targetPlace, translations) {
+    console.log(targetPlace);
     let weatherDetails = document.querySelector(".current-weather");
     let TodayDetails = document.querySelector(".day-detail");
     weatherDetails.innerHTML = `
@@ -8,12 +9,13 @@ function displayCurrentWeather(targetPlace, translations) {
             <span>${Math.floor(targetPlace.main.feels_like)}<sup>°C</sup></span>
         </div>
         <div class="current-preview">
-            <div class="rain">${translations.rain}: %</div>
+            <div class="rain">${translations.rain}: ${targetPlace.pop || 0 }%</div>
             <div class="humidity">${translations.humidity}: ${targetPlace.main.humidity}%</div>
             <div class="wind">${translations.wind}: ${Math.floor(targetPlace.wind.speed * 3.6)}km/h</div>
         </div>
     `;
-    let thisDay = new Date();
+    let thisDay = targetPlace.dt_txt ? new Date(targetPlace.dt_txt) : new Date();
+    console.log(thisDay);
     let dayName = thisDay.toLocaleDateString(`${translations.shortLang}`, { weekday: 'long' });
     TodayDetails.innerHTML = `
         <div class="title">${translations.weather}</div>
