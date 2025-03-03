@@ -3,7 +3,7 @@ let personalApiKey = import.meta.env.VITE_API_KEY
 
 // get the geoCoding of the target place by city or country name 
 async function getGeocoding(targePlace) {
-    document.querySelector(".loading").classList.add("active")
+    toggleLoader(true);
     try {
         let response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${targePlace}&limit=5&appid=${personalApiKey}`);
         if (!response.ok) {
@@ -17,13 +17,13 @@ async function getGeocoding(targePlace) {
     } catch (error) {
         throw new Error(`the error 1-2 : ${error}`);
     } finally {
-        document.querySelector(".loading").classList.remove("active")
+        toggleLoader(false)
     }
 
 }
 
 // get The current weather of the current day
-async function currentWeatherData(lat, lon, lang) {
+async function fetchTodayWeather(lat, lon, lang) {
     try {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=${lang}&appid=${personalApiKey}`);
         if (!response.ok) {
@@ -36,7 +36,7 @@ async function currentWeatherData(lat, lon, lang) {
 }
 
 // get the week weather
-async function getWeekWeatherdata(lat, lon, lang) {
+async function fetchWeeklyWeather(lat, lon, lang) {
     try {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat.toFixed(2)}&lon=${lon.toFixed(2)}&units=metric&lang=${lang}&appid=${personalApiKey}`);
         if (!response.ok) {
@@ -49,10 +49,10 @@ async function getWeekWeatherdata(lat, lon, lang) {
 }
 
 // get the translation from en.json or ar.json file and return it 
-async function getTranslateLang(lang) {
-    document.querySelector(".full-loading").classList.add("active")
+async function fetchTranslation(lang) {
+    toggleLoader(true);
     setTimeout(() => {
-        document.querySelector(".full-loading").classList.remove("active")
+        toggleLoader(false)
     }, 1000);
     try {
         let response = await fetch(`/translation/${lang}.json`)
@@ -65,4 +65,9 @@ async function getTranslateLang(lang) {
     }
 }
 
-export { getGeocoding, currentWeatherData, getWeekWeatherdata, getTranslateLang }
+function toggleLoader(show) {
+    const loader = document.querySelector(".full-loading");
+    show ? loader.classList.add("active") : loader.classList.remove("active");
+}
+
+export { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation }

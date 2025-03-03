@@ -23,7 +23,7 @@
                 <div class="search-bar mb-5 pt-5 text-center">
                     <form action="">
                         <div class="input-group ">
-                            <input type="text" class="input form-control" placeholder="Country, City, Zip Code.."
+                            <input type="search" class="input form-control" placeholder="Country, City, Zip Code.."
                                 aria-label="Recipient's username" aria-describedby="button-addon2">
                             <button class="search-btn btn fw-bold px-sm-4 btn-outline-secondary" type="submit"
                                 id="button-addon2">Search</button>
@@ -47,7 +47,8 @@
                         class="loading d-flex align-items-center justify-content-center w-100 h-100 position-absolute top-50 start-50 translate-middle">
                         <span></span>
                     </div>
-                    <div class="current-weather col-sm-6 d-flex align-items-start ">
+                    <div
+                        class="current-weather col-sm-6 d-flex align-items-center justify-content-sm-start justify-content-center ">
                         <div class="img">
                         </div>
                         <div class="temperature fw-bold">
@@ -59,13 +60,42 @@
                             <div class="wind">wind: km/h</div>
                         </div>
                     </div>
-                    <div class="col-sm-6 day-detail d-flex flex-column align-items-sm-end">
+                    <div class="col-sm-6 day-detail d-flex flex-column text-center align-items-sm-end">
                         <div class="title">Weather</div>
                         <div class="current-day"></div>
                         <div class="weather-desc"></div>
                     </div>
-                    <div class="col-12">
-                        hhhhh
+                    <div class="col-12 week-details justify-content-md-between flex-md-nowrap justify-content-center gap-md-0 gap-3">
+                        <!-- <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="day-name">Today</div>
+                            <img src="https://openweathermap.org/img/wn/01d@2x.png" alt="">
+                            <div class="hot-degree">30</div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -73,6 +103,7 @@
         <!-- js Files -->
         <script src="/src/js/main.js" type="module"></script>
         <script src="/src/js/fetchData.js" type="module"></script>
+        <script src="/src/js/domUpdater.js" type="module"></script>
 
     </body>
 

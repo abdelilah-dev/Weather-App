@@ -1,30 +1,23 @@
-import { getGeocoding, currentWeatherData, getWeekWeatherdata, getTranslateLang } from "./fetchData.js";
+import { getGeocoding, fetchTodayWeather, fetchWeeklyWeather, fetchTranslation } from "./fetchData.js";
+import { displayCurrentWeather, displayWeekWeather } from "./domUpdater.js";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-// let date = new Date("2025-03-02 15:00:00");
-// console.log(date);
-// console.log(date.getDay());
-// console.log(date.toLocaleDateString(`en`, { weekday: 'long' }))
-
-// let mymap = new Map([
-//     ["1", { one: 1 }],
-//     ["1", { one: 1 }],
-//     ["1", { one: 1 }],
-// ])
-// console.log(mymap);
 let input = document.querySelector(".input");
 let SearchBtn = document.querySelector(".search-btn");
-let changLangBtns = document.querySelector(".change-lang");
 let weatherData = {};
 let currentLang = window.localStorage.lang || "en";
-console.log(currentLang);
 
 window.onload = async function () {
     document.querySelector(".full-loading").classList.remove("active")
     loadTranslate(currentLang);
     toggleLanguageClass(currentLang);
     if (window.localStorage.weatherData) {
-        displayCurrentWeather(JSON.parse(window.localStorage.weatherData).currentWeather, await getTranslateLang(currentLang));
+        let getOldDayWeather = JSON.parse(window.localStorage.weatherData).currentWeather;
+        let getTodayWeather = await fetchTodayWeather(getOldDayWeather.coord.lat, getOldDayWeather.coord.lon, window.localStorage.lang || "en")
+        let getThisWeekWeather = await fetchWeeklyWeather(getOldDayWeather.coord.lat, getOldDayWeather.coord.lon, window.localStorage.lang || "en");
+        let translate = await fetchTranslation(currentLang);
+        displayCurrentWeather(getTodayWeather, translate);
+        displayWeekWeather(getUniqueDaysWeather(getThisWeekWeather), translate);
     } else {
         console.log("no data to show")
     }
@@ -41,16 +34,18 @@ SearchBtn.onclick = async function (e) {
             if (geocoding.length !== 0) {
                 // wait to fetch data from two functions and return it
                 [weatherData.currentWeather, weatherData.weekWeather] = await Promise.all([
-                    currentWeatherData(geocoding[0].lat, geocoding[0].lon, currentLang),
-                    getWeekWeatherdata(geocoding[0].lat, geocoding[0].lon, currentLang)
+                    fetchTodayWeather(geocoding[0].lat, geocoding[0].lon, currentLang),
+                    fetchWeeklyWeather(geocoding[0].lat, geocoding[0].lon, currentLang)
                 ]);
-                let translate = await getTranslateLang(currentLang);
+                let translate = await fetchTranslation(currentLang);
                 window.localStorage.setItem("weatherData", JSON.stringify(weatherData));
-                displayCurrentWeather(weatherData.currentWeather, translate);
+                updateWeatherUI(weatherData.currentWeather, weatherData.weekWeather, translate);
             }
         } catch (error) {
             document.querySelector(".search-bar .error").innerHTML = "* There was an error fetching the weather data.";
             throw new Error(`The Error : ${error}`)
+        } finally {
+            input.value = "";
         }
     }
 }
@@ -62,38 +57,45 @@ document.querySelectorAll(".dropdown-item").forEach((ele) => {
         let selectLang = e.target.getAttribute("translate-lang");
         window.localStorage.setItem("lang", selectLang);
         currentLang = selectLang;
-        displayCurrentWeather(JSON.parse(window.localStorage.weatherData).currentWeather, await getTranslateLang(currentLang))
+        let translate = await fetchTranslation(currentLang);
+        let todayWeather = JSON.parse(window.localStorage.weatherData).currentWeather;
+        let weeklyWeather = JSON.parse(window.localStorage.weatherData).weekWeather;
+        updateWeatherUI(todayWeather, weeklyWeather, translate);
         toggleLanguageClass(selectLang);
         loadTranslate(selectLang);
     })
 })
-// display the current weather of today
-function displayCurrentWeather(targetPlace, translations) {
-    let weatherDetails = document.querySelector(".current-weather");
-    let TodayDetails = document.querySelector(".day-detail");
-    weatherDetails.innerHTML = `
-        <img class="img" src="https://openweathermap.org/img/wn/${targetPlace.weather[0].icon}@2x.png" alt="">
-        <div class="temperature">
-            <span>${Math.floor(targetPlace.main.feels_like)}<sup>°C</sup></span>
-        </div>
-        <div class="current-preview">
-            <div class="rain">${translations.rain}: %</div>
-            <div class="humidity">${translations.humidity}: ${targetPlace.main.humidity}%</div>
-            <div class="wind">${translations.wind}: ${Math.floor(targetPlace.wind.speed * 3.6)}km/h</div>
-        </div>
-    `;
-    let thisDay = new Date();
-    let dayName = thisDay.toLocaleDateString(`${translations.shortLang}`, { weekday: 'long' });
-    TodayDetails.innerHTML = `
-        <div class="title">${translations.weather}</div>
-        <div class="current-day">${dayName}</div>
-        <div class="weather-desc">${targetPlace.weather[0].description}</div>
-    ` ;
+
+// if preed in any day in week bar in bottom display it in current day 
+let weekDetails = document.querySelector(".week-details");
+weekDetails.addEventListener("click", async (event) => {
+    let parentWithClass = event.target.closest(".day")
+    if (parentWithClass) {
+        let getWeekWeather = JSON.parse(window.localStorage.weatherData).weekWeather;
+        let dayNumber = parentWithClass.getAttribute("day-num");
+        let uniqueDays = getUniqueDaysWeather(getWeekWeather)
+        let translate = await fetchTranslation(currentLang);
+        updateWeatherUI(uniqueDays.get(+dayNumber), getWeekWeather, translate)
+    }
+});
+
+function updateWeatherUI(currentWeather, weekWeather, translate) {
+    displayCurrentWeather(currentWeather, translate);
+    displayWeekWeather(getUniqueDaysWeather(weekWeather), translate);
+}
+
+function getUniqueDaysWeather(weekWeather) {
+    let uniqueDays = new Map();
+    weekWeather.list.forEach((obj) => {
+        let date = new Date(obj.dt_txt);
+        uniqueDays.set(date.getDay() % 7, obj);
+    })
+    return uniqueDays;
 }
 
 // load translate languge from fecthdata file 
 async function loadTranslate(lang) {
-    let translate = await getTranslateLang(lang);
+    let translate = await fetchTranslation(lang);
     applyTranslations(translate);
 }
 // apply the translation on page
