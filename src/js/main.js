@@ -26,7 +26,6 @@ function getUserLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                console.log(position);
                 const { latitude, longitude } = position.coords;
                 getWeatherData("rabat", latitude, longitude);
             },
@@ -72,8 +71,6 @@ async function getWeatherData(locationName, lat, lon) {
     let geocoding = await getGeocoding(locationName);
     let latitude = lat || geocoding[0].lat;
     let longitude = lon || geocoding[0].lon;
-    console.log(latitude);
-    console.log(longitude);
     if (geocoding.length !== 0) {
         // wait to fetch data from two functions and return it
         [weatherData.currentWeather, weatherData.weekWeather] = await Promise.all([
