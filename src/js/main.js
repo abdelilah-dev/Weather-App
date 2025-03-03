@@ -18,9 +18,29 @@ window.onload = async function () {
         let translate = await fetchTranslation(currentLang);
         updateWeatherUI(getTodayWeather, getThisWeekWeather, translate);
     } else {
+        getUserLocation();
+    }
+}
+
+function getUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log(position);
+                const { latitude, longitude } = position.coords;
+                getWeatherData("rabat", latitude, longitude);
+            },
+            (error) => {
+                console.warn("Geolocation denied. Trying IP lookup...");
+                getLocationByIP(); // fallback to IP
+            }
+        );
+    } else {
+        console.warn("Geolocation not supported. Trying IP lookup...");
         getLocationByIP();
     }
 }
+
 
 async function getLocationByIP() {
     try {
@@ -48,13 +68,17 @@ SearchBtn.onclick = async function (e) {
     }
 }
 
-async function getWeatherData(locationName) {
+async function getWeatherData(locationName, lat, lon) {
     let geocoding = await getGeocoding(locationName);
+    let latitude = lat || geocoding[0].lat;
+    let longitude = lon || geocoding[0].lon;
+    console.log(latitude);
+    console.log(longitude);
     if (geocoding.length !== 0) {
         // wait to fetch data from two functions and return it
         [weatherData.currentWeather, weatherData.weekWeather] = await Promise.all([
-            fetchTodayWeather(geocoding[0].lat, geocoding[0].lon, currentLang),
-            fetchWeeklyWeather(geocoding[0].lat, geocoding[0].lon, currentLang)
+            fetchTodayWeather(latitude, longitude, currentLang),
+            fetchWeeklyWeather(latitude, longitude, currentLang)
         ]);
         let translate = await fetchTranslation(currentLang);
         window.localStorage.setItem("weatherData", JSON.stringify(weatherData));
