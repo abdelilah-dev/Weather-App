@@ -1,6 +1,5 @@
 let personalApiKey = import.meta.env.VITE_API_KEY
 let ip_access_key = import.meta.env.VITE_API_IP_KEY
-console.log(ip_access_key);
 
 // get the geoCoding of the target place by city or country name 
 async function getGeocoding(targePlace) {
